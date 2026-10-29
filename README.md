@@ -45,3 +45,14 @@ Each session is stored in `outputs/session-NNN/`:
 ## Tests
 
 Run `pytest` from the project environment. The current unit tests cover overlap calculations and WER arithmetic; they do not validate the diarization or transcription models.
+
+## Screenshots
+
+### Model and Device Options
+![Model and Device Options](screenshots/speech_analyzer_model_and_device_options.png)
+
+### Test 1 — Analysis Results
+![Test 1](screenshots/Test%201.jpg)
+
+### Test 2 — Analysis Results
+![Test 2](screenshots/Test%202.jpg)
