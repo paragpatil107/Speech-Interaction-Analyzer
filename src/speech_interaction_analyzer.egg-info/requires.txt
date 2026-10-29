@@ -1,0 +1,9 @@
+faster-whisper<2.0,>=1.1.0
+pyannote.audio<4.0,>=3.3.2
+matplotlib<4.0,>=3.8
+numpy<3.0,>=1.26
+soundfile<1.0,>=0.12
+sounddevice<1.0,>=0.4.6
+
+[test]
+pytest<9.0,>=8.0

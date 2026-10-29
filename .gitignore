@@ -1,0 +1,27 @@
+# Python environment and cache
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Local recordings and generated reports
+outputs/
+recordings/
+
+# IDE and operating system
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Test caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/

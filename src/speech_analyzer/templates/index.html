@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Speech Interaction Analyzer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Speech Interaction Analyzer</h1>
+      <p>Record a conversation, analyze it, and review the results.</p>
+    </div>
+    <button type="button" class="button button-quiet" id="closeApp">Close app</button>
+  </header>
+
+  <main class="layout">
+    <section class="left-column">
+      <section class="panel">
+        <h2>Recording</h2>
+        <div class="settings-grid">
+          <label>Transcription model
+            <select id="modelSelect">
+              <option value="tiny">Tiny — fastest</option>
+              <option value="base" selected>Base — faster (default)</option>
+              <option value="small">Small — balanced</option>
+              <option value="medium">Medium — slower</option>
+              <option value="large-v3">Large v3 — slowest</option>
+            </select>
+          </label>
+          <label>Device
+            <select id="deviceSelect">
+              <option value="cpu" selected>CPU</option>
+              <option value="cuda">CUDA GPU</option>
+            </select>
+          </label>
+        </div>
+        <p class="model-note">Base is the faster default. Speaker detection also runs for every analysis, regardless of transcription model size. The first run may take longer; loaded models are reused while this app stays open.</p>
+        <label class="token-label" for="hfToken">Hugging Face read token <span>(needed for analysis)</span></label>
+        <input id="hfToken" type="password" autocomplete="off" spellcheck="false" placeholder="hf_… (leave blank if set in environment)">
+        <p class="help-text">Required for analysis. It is not saved to project files.</p>
+
+        <div class="button-row">
+          <button type="button" class="button button-primary" id="startRecord">Start recording</button>
+          <button type="button" class="button" id="stopRecord" disabled>Stop recording</button>
+          <button type="button" class="button button-analyze" id="analyzeSelected" disabled>Analyze</button>
+        </div>
+        <div class="status-line" id="statusLine" role="status">Ready. Choose a model and start recording.</div>
+        <div class="recording-time" id="recordingTime" hidden>00:00</div>
+        <div class="progress-track" id="progressTrack" hidden><span id="progressBar"></span></div>
+      </section>
+
+      <section class="panel sessions-panel">
+        <div class="section-heading">
+          <h2>Previous recordings</h2>
+          <button type="button" class="small-button" id="refreshSessions">Refresh</button>
+        </div>
+        <div id="sessionList" class="session-list">
+          <p class="muted">No recordings yet.</p>
+        </div>
+        <p class="help-text">Recordings and reports are stored in the project's <code>outputs</code> folder.</p>
+      </section>
+    </section>
+
+    <section class="panel results-panel">
+      <div class="section-heading results-heading">
+        <div>
+          <h2>Analysis results</h2>
+          <p id="resultsSubheading" class="muted">Select a previous recording or record a new one.</p>
+        </div>
+        <div class="download-links" id="downloadLinks" hidden>
+          <a id="downloadReport" href="#">Report JSON</a>
+          <a id="downloadCsv" href="#">Speaker turns CSV</a>
+        </div>
+      </div>
+
+      <div id="emptyResults" class="empty-results">
+        <p>After you analyze a recording, its statistics and transcript will appear here.</p>
+      </div>
+
+      <div id="readyResults" class="ready-results" hidden>
+        <p>This recording has not been analyzed yet.</p>
+        <p class="muted">Click <strong>Analyze</strong> above when you're ready.</p>
+      </div>
+
+      <div id="reportResults" hidden>
+        <div class="stats-grid">
+          <div class="stat"><span>Duration</span><strong id="statDuration">—</strong></div>
+          <div class="stat"><span>Speakers detected</span><strong id="statSpeakers">—</strong></div>
+          <div class="stat"><span>Total overlap</span><strong id="statOverlap">—</strong><small id="statOverlapPercent"></small></div>
+          <div class="stat"><span>Pauses (≥ 0.4 sec)</span><strong id="statPauses">—</strong></div>
+        </div>
+
+        <div class="result-section" id="timelineSection">
+          <h3>Speaker timeline</h3>
+          <img id="timelineImage" alt="Speaker turns and speech timeline">
+        </div>
+
+        <div class="result-section">
+          <div class="section-heading"><h3>Transcript</h3><button type="button" class="small-button" id="copyTranscript">Copy text</button></div>
+          <p id="transcriptText" class="transcript"></p>
+          <p id="werText" class="help-text"></p>
+        </div>
+
+        <div class="result-section">
+          <h3>Detected overlap</h3>
+          <p id="overlapSummary" class="muted"></p>
+          <div id="overlapEvents" class="simple-list"></div>
+          <p class="help-text">Overlap is a candidate event, not proof of an intentional interruption. Listen to the audio before interpreting it.</p>
+        </div>
+
+        <div class="result-section">
+          <h3>Speaker turns</h3>
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>Speaker</th><th>Start (s)</th><th>End (s)</th><th>Duration (s)</th></tr></thead>
+              <tbody id="speakerTurnsBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+LICENSE
+README.md
+pyproject.toml
+src/speech_analyzer/__init__.py
+src/speech_analyzer/analyzer.py
+src/speech_analyzer/cli.py
+src/speech_analyzer/metrics.py
+src/speech_interaction_analyzer.egg-info/PKG-INFO
+src/speech_interaction_analyzer.egg-info/SOURCES.txt
+src/speech_interaction_analyzer.egg-info/dependency_links.txt
+src/speech_interaction_analyzer.egg-info/entry_points.txt
+src/speech_interaction_analyzer.egg-info/requires.txt
+src/speech_interaction_analyzer.egg-info/top_level.txt
+tests/test_metrics.py
